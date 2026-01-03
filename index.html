@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Synthwave Melodizer - MIDI Melody Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+  
+  <div class="container">
+    <!-- Compact Top Bar -->
+    <div class="top-bar">
+      <div class="title-section">
+        <h1>SYNTHWAVE MELODIZER</h1>
+      </div>
+      
+      <!-- Compact MIDI Status -->
+      <div class="midi-compact">
+        <span class="status-dot" id="statusDot"></span>
+        <select id="outputSelect" class="midi-device-select" disabled>
+          <option>No MIDI Device</option>
+        </select>
+        <select id="midiChannel" class="midi-channel-select">
+          <option value="1">CH 1</option>
+          <option value="2">CH 2</option>
+          <option value="3">CH 3</option>
+          <option value="4">CH 4</option>
+          <option value="5">CH 5</option>
+          <option value="6">CH 6</option>
+          <option value="7">CH 7</option>
+          <option value="8">CH 8</option>
+          <option value="9">CH 9</option>
+          <option value="10">CH 10</option>
+          <option value="11">CH 11</option>
+          <option value="12">CH 12</option>
+          <option value="13">CH 13</option>
+          <option value="14">CH 14</option>
+          <option value="15">CH 15</option>
+          <option value="16">CH 16</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Compact Controls Row -->
+    <div class="controls-row">
+      <div class="control-group">
+        <label>KEY</label>
+        <select id="rootNote">
+          <option value="C">C</option>
+          <option value="Db">Db</option>
+          <option value="D">D</option>
+          <option value="Eb">Eb</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="Gb">Gb</option>
+          <option value="G">G</option>
+          <option value="Ab">Ab</option>
+          <option value="A" selected>A</option>
+          <option value="Bb">Bb</option>
+          <option value="B">B</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>OCT</label>
+        <select id="octave">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4" selected>4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>SCALE</label>
+        <select id="scale">
+          <option value="Minor" selected>Minor</option>
+          <option value="Major">Major</option>
+          <option value="PentMinor">Pent Min</option>
+          <option value="PentMajor">Pent Maj</option>
+          <option value="Dorian">Dorian</option>
+          <option value="Phrygian">Phrygian</option>
+          <option value="Lydian">Lydian</option>
+          <option value="Mixolydian">Mixolyd</option>
+          <option value="HarmMinor">Harm Min</option>
+          <option value="MelMinor">Mel Min</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>STYLE</label>
+        <select id="style">
+          <option value="arpeggio">Arpeggio</option>
+          <option value="driving">Driving</option>
+          <option value="lead">Synth Lead</option>
+          <option value="nightdrive">Night Drive</option>
+          <option value="pulse">Neon Pulse</option>
+          <option value="soaring">Soaring</option>
+          <option value="mysterious">Mysterious</option>
+          <option value="aggressive">Aggressive</option>
+          <option value="dreamy">Dreamy</option>
+          <option value="bassline">Bassline</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>RHYTHM</label>
+        <select id="rhythm">
+          <option value="straight16">16ths</option>
+          <option value="straight8">8ths</option>
+          <option value="syncopated">Syncopated</option>
+          <option value="dotted">Dotted</option>
+          <option value="mixed">Mixed</option>
+          <option value="sparse">Sparse</option>
+          <option value="driving">Driving</option>
+        </select>
+      </div>
+      
+      <div class="control-group chord-group">
+        <label>CHORDS</label>
+        <label class="chord-toggle" title="Use chord progression">
+          <input type="checkbox" id="chordToggle">
+          <div class="toggle-box"></div>
+        </label>
+        <select id="chordProgression" disabled>
+          <option value="random">Random</option>
+        </select>
+      </div>
+      
+      <div class="control-group bass-group">
+        <label>BASS</label>
+        <label class="bass-toggle" title="Add bass notes">
+          <input type="checkbox" id="bassToggle">
+          <div class="toggle-box"></div>
+        </label>
+        <select id="bassChannel" disabled>
+          <option value="same">Same CH</option>
+          <option value="2">CH 2</option>
+          <option value="3">CH 3</option>
+          <option value="4">CH 4</option>
+          <option value="5">CH 5</option>
+          <option value="6">CH 6</option>
+          <option value="7">CH 7</option>
+          <option value="8">CH 8</option>
+          <option value="9">CH 9</option>
+          <option value="10">CH 10</option>
+        </select>
+      </div>
+      
+      <div class="control-group">
+        <label>MELODY</label>
+        <div class="audio-source-group">
+          <button class="audio-src-btn active" id="melodySrcInternal" title="Internal Synth">INT</button>
+          <button class="audio-src-btn" id="melodySrcMidi" title="MIDI Output">MIDI</button>
+          <button class="audio-src-btn edit-btn" id="melodyEdit" title="Edit Sound">✎</button>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label>BASS OUT</label>
+        <div class="audio-source-group">
+          <button class="audio-src-btn active" id="bassSrcInternal" title="Internal Synth">INT</button>
+          <button class="audio-src-btn" id="bassSrcMidi" title="MIDI Output">MIDI</button>
+          <button class="audio-src-btn edit-btn" id="bassEdit" title="Edit Sound">✎</button>
+        </div>
+      </div>
+      
+      <div class="control-group tempo-group">
+        <label>BPM</label>
+        <input type="range" id="tempo" min="60" max="180" value="120">
+        <span id="tempoValue">120</span>
+      </div>
+      
+      <div class="control-group buttons-group">
+        <button class="btn btn-generate" id="generateBtn" disabled title="Generate">⟳</button>
+        <button class="btn btn-play" id="playBtn" disabled title="Play">▶</button>
+        <button class="btn btn-stop" id="stopBtn" disabled title="Stop">■</button>
+        <label class="loop-toggle" title="Loop">
+          <input type="checkbox" id="loopToggle">
+          <div class="toggle-box"></div>
+        </label>
+      </div>
+    </div>
+    
+    <!-- Piano Roll -->
+    <div class="piano-roll-container">
+      <div class="piano-roll-wrapper">
+        <div class="piano-keys" id="pianoKeys"></div>
+        <div class="piano-roll-scroll" id="pianoRollScroll">
+          <div class="piano-roll-grid" id="pianoRollGrid">
+            <div class="placeholder-text" id="placeholder">Press ⟳ to generate a melody</div>
+            <div class="grid-lines" id="gridLines"></div>
+            <div class="notes-layer" id="notesLayer"></div>
+            <div class="playhead" id="playhead"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">SYNTHWAVE MELODIZER v5.0</div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/midi.js"></script>
+  <script src="js/synth.js"></script>
+  <script src="js/piano-roll.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/playback.js"></script>
+  <script src="js/sound-editor.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
